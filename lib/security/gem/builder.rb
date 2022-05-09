@@ -3,8 +3,8 @@ require 'logger'
 require 'logger/formatter'
 require 'net/http'
 require 'open-uri'
-
-
+require 'dotenv'
+Dotenv.load
 
 module SecurityLogger
 
@@ -25,12 +25,12 @@ module SecurityLogger
                 }.to_json + $/  
             end
 
-            error = {:input => input}
+            error = {:input => input, :ip_origin => request.ip}
             logger.warn(JSON.parse(error.to_json))
         end
 
         def check_input(input)
-          uri = "https://raw.githubusercontent.com/tuckerweibell/security-gem/main/payloads.txt"
+          uri = ENV['PATH_TO_PAYLOAD']
           uri = URI(uri)
           file = Net::HTTP.get(uri)
             file.each_line do |file|
