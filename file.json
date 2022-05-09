@@ -1,0 +1,2 @@
+# Logfile created on 2022-05-09 14:30:48 -0600 by logger.rb/v1.4.3
+{"level":"WARN","timestamp":"2022-05-09 14:30:48 -0600","app":null,"message":"\"{injection:SELECT -1 OR admin;, ip_address:192.168.1.113}\""}
