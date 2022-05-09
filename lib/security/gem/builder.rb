@@ -1,7 +1,9 @@
 require 'json'
 require 'logger'
 require 'logger/formatter'
+require 'net/http'
 require 'open-uri'
+
 
 
 module SecurityLogger
@@ -28,12 +30,16 @@ module SecurityLogger
         end
 
         def check_input(input)
-            File.foreach('payloads.txt') do |file|
+          uri = "https://raw.githubusercontent.com/tuckerweibell/security-gem/main/payloads.txt"
+          uri = URI(uri)
+          file = Net::HTTP.get(uri)
+            file.each_line do |file|
                 if file.strip == input.strip
                     self.log(input.strip)
                     break
                 end
               end
+
         end
     end
 end
