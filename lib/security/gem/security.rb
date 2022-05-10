@@ -20,6 +20,7 @@ require 'logger/formatter'
 require 'net/http'
 require 'dotenv'
 require 'colored'
+require 'fuzzystringmatch'
 Dotenv.load
 
 module SecurityLogger
@@ -63,25 +64,18 @@ module SecurityLogger
         end
 
         def check_input(input)
-          uri = ENV['PATH_TO_SQL_PAYLOAD']
-          uri = URI(uri)
-          file = Net::HTTP.get(uri)
-            file.each_line do |file|
-                if file.strip == input.strip
-                    self.log(input.strip)
-                    return
+        # Checks for fuzzy string match using Levenshtein distance
+            uri = ENV['PATH_TO_SQL_COMPLETE_LIST']
+            uri = URI(uri)
+            file = Net::HTTP.get(uri)
+            file.each_line do |line|
+                fuzzy = FuzzyStringMatch::JaroWinkler.create( :pure )
+                distance = fuzzy.getDistance(input, line)
+                if distance >= 7.8
+                    self.log(input)
+                    break
                 end
             end
-
-          uri = ENV['PATH_TO_SQL_COMMON_COMMANDS']
-          uri = URI(uri)
-          file = Net::HTTP.get(uri)
-            file.each_line do |file|
-                if  input.strip.downcase.include?(file.strip.downcase)
-                    self.log(input.strip)
-                    return
-                end
-            end  
 
         end
     end

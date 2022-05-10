@@ -6,8 +6,13 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    RubyInline (3.12.5)
+      ZenTest (~> 4.3)
+    ZenTest (4.12.1)
     ast (2.4.2)
     colored (1.2)
+    fuzzy-string-match (1.0.1)
+      RubyInline (>= 3.8.6)
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
@@ -34,6 +39,7 @@ PLATFORMS
 
 DEPENDENCIES
   colored (~> 1.2)
+  fuzzy-string-match
   rake (~> 13.0)
   rubocop (~> 0.80)
   security-gem!
