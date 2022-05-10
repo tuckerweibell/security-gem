@@ -71,6 +71,8 @@ module SecurityLogger
             file.each_line do |line|
                 fuzzy = FuzzyStringMatch::JaroWinkler.create( :pure )
                 distance = fuzzy.getDistance(input, line)
+                puts line
+                puts distance
                 if distance >= 7.8
                     self.log(input)
                     break
