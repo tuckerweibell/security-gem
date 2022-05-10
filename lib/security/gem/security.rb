@@ -41,10 +41,12 @@ module SecurityLogger
 =end 
 
     class Sql_Injection
+
         def initialize (ip_origin:)
             @ip_origin = ip_origin
         end
 
+        # Logs injection attemps in json format to STDOUT
         def log(input)
             logger = Logger.new(STDOUT)
             logger.formatter = proc do |severity, datetime, progname, msg|
@@ -55,25 +57,20 @@ module SecurityLogger
                   message: msg
                 }.to_json + $/  
             end
-
             message = {:threat => "sql_injection_attack", :input => input, :ip_origin => @ip_origin}
-            puts
             logger.warn(JSON.parse(message.to_json))
-            puts
             return
         end
 
-        def check_input(input)
         # Checks for fuzzy string match using Levenshtein distance
+        def check_input(input)
             uri = ENV['PATH_TO_SQL_COMPLETE_LIST']
             uri = URI(uri)
             file = Net::HTTP.get(uri)
+            fuzzy = FuzzyStringMatch::JaroWinkler.create( :pure )
             file.each_line do |line|
-                fuzzy = FuzzyStringMatch::JaroWinkler.create( :pure )
                 distance = fuzzy.getDistance(input, line)
-                puts line
-                puts distance
-                if distance >= 7.8
+                if distance >= 0.75
                     self.log(input)
                     break
                 end
