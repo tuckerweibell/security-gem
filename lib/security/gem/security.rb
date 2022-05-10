@@ -6,6 +6,9 @@
     Description:
     This module provides a simple and unified format to log security events
 
+    Classes: 
+    Sql_Injection, Xss_Injection, User_Agent
+
     Owner:
     Tucker Weibell - 05/09/2022
 
@@ -20,7 +23,7 @@ Dotenv.load
 
 module SecurityLogger
 
-=begin  
+=begin
 
     Sql_Injection Class
     ___________________
@@ -28,7 +31,7 @@ module SecurityLogger
     Description:
     - Checks inputs against most commonly used sql injection commands.
     - Inputs that match or contain probably sql commands will be logged.
-    - Payloads to verify against can be replaced by simply changing the ENV varibles
+    - Payloads can be replaced by simply changing the ENV varibles
       and pointing the URI to any custom text file
 
     Usage: SecurityLogger::Sql_Injection.new(ip_origin: request.ip).check_input(input)
@@ -88,11 +91,11 @@ module SecurityLogger
     
     Description:
     - Checks inputs against most commonly used xss scripts.
-    - Inputs that match or contain probably scripts will be logged.
-    - Payloads to verify against can be replaced by simply changing the ENV varibles
+    - Inputs that match or contain common keywords will be logged.
+    - Payloads can be replaced by simply changing the ENV varibles
       and pointing the URI to any custom text file
 
-    Usage: SecurityLogger::Sql_Injection.new(ip_origin: request.ip).check_input(input)
+    Usage: SecurityLogger::Xss_Injection.new(ip_origin: request.ip).check_input(input)
 
 =end 
 
@@ -140,6 +143,22 @@ module SecurityLogger
         end
     end
 
+
+=begin  
+
+    User_Agent Class
+    ___________________
+    
+    Description:
+    - Checks inputs against most common user_agents (approx. top 1000).
+    - Inputs that DO NOT match any of the most common user agents will be logged.
+    - Payloads can be replaced by simply changing the ENV varibles
+      and pointing the URI to any custom text file
+
+    Usage: SecurityLogger::User_Agent.new(ip_origin: request.ip).check_input(input)
+
+=end 
+
     class User_Agent
         def initialize (ip_origin:)
             @ip_origin = ip_origin
@@ -164,13 +183,17 @@ module SecurityLogger
           uri = ENV['PATH_TO_USER_AGENT_PAYLOAD']
           uri = URI(uri)
           file = Net::HTTP.get(uri)
+          @matches = 0
             file.each_line do |file|
                 if file.strip == input.strip
-                    self.log(input.strip)
-                    return
+                @matches += 1
                 end
             end
 
+            if @matches == 0
+                self.log(input.strip)
+                return
+            end
         end
     end
 end
