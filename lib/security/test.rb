@@ -1,4 +1,4 @@
-require_relative "gem/builder"
+require_relative "gem/security"
 
 # Sample SQL input
 input = "or 1=1"
