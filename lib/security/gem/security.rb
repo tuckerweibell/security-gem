@@ -25,7 +25,7 @@ module SecurityLogger
                 }.to_json + $/  
             end
 
-            error = {:input => input, :ip_origin => @ip_origin}
+            error = {:threat => "sql_injection_attack", :input => input, :ip_origin => @ip_origin}
             logger.warn(JSON.parse(error.to_json))
         end
 
@@ -59,12 +59,12 @@ module SecurityLogger
                 }.to_json + $/  
             end
 
-            error = {:input => input, :ip_origin => @ip_origin}
+            error = {:threat => "xss_attack", :input => input, :ip_origin => @ip_origin}
             logger.warn(JSON.parse(error.to_json))
         end
 
         def check_input(input)
-          uri = ENV['PATH_TO_SQL_PAYLOAD']
+          uri = ENV['PATH_TO_XSS_PAYLOAD']
           uri = URI(uri)
           file = Net::HTTP.get(uri)
             file.each_line do |file|
