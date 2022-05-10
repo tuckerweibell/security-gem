@@ -62,7 +62,7 @@ module SecurityLogger
             file.each_line do |file|
                 if file.strip == input.strip
                     self.log(input.strip)
-                    break
+                    return
                 end
             end
 
@@ -72,7 +72,7 @@ module SecurityLogger
             file.each_line do |file|
                 if  input.strip.downcase.include?(file.strip.downcase)
                     self.log(input.strip)
-                    break
+                    return
                 end
             end  
 
@@ -122,7 +122,7 @@ module SecurityLogger
             file.each_line do |file|
                 if file.strip == input.strip
                     self.log(input.strip)
-                    break
+                    return
                 end
             end
 
@@ -132,7 +132,7 @@ module SecurityLogger
             file.each_line do |file|
                 if  input.strip.downcase.include?(file.strip.downcase)
                     self.log(input.strip)
-                    break
+                    return
                 end
             end 
 
