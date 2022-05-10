@@ -40,6 +40,18 @@ module SecurityLogger
                 end
             end
 
+        uri = ENV['PATH_TO_SQL_COMMON_COMMANDS']
+          uri = URI(uri)
+          file = Net::HTTP.get(uri)
+            file.each_line do |file|
+                puts input.strip.downcase
+                puts file.strip.downcase
+                if  input.strip.downcase.include?(file.strip.downcase)
+                    self.log(input.strip)
+                    break
+                end
+            end  
+
         end
     end
 
