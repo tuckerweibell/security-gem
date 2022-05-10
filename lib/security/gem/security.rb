@@ -6,7 +6,8 @@
     Description:
     This module provides a simple and unified format to log security events
 
-    Created by Tucker Weibell - 05/09/2022
+    Owner:
+    Tucker Weibell - 05/09/2022
 
 =end
 
@@ -135,6 +136,40 @@ module SecurityLogger
                     return
                 end
             end 
+
+        end
+    end
+
+    class User_Agent
+        def initialize (ip_origin:)
+            @ip_origin = ip_origin
+        end
+
+        def log(input)
+            logger = Logger.new(STDOUT)
+            logger.formatter = proc do |severity, datetime, progname, msg|
+                {
+                  severity: severity,
+                  timestamp: datetime.to_s,
+                  app: progname,
+                  message: msg
+                }.to_json + $/  
+            end
+
+            message = {:threat => "uncommon_user_agent", :input => input, :ip_origin => @ip_origin}
+            logger.warn(JSON.parse(message.to_json))
+        end
+
+        def check_input(input)
+          uri = ENV['PATH_TO_USER_AGENT_PAYLOAD']
+          uri = URI(uri)
+          file = Net::HTTP.get(uri)
+            file.each_line do |file|
+                if file.strip == input.strip
+                    self.log(input.strip)
+                    return
+                end
+            end
 
         end
     end
