@@ -19,6 +19,7 @@ require 'logger'
 require 'logger/formatter'
 require 'net/http'
 require 'dotenv'
+require 'colored'
 Dotenv.load
 
 module SecurityLogger
@@ -55,7 +56,9 @@ module SecurityLogger
             end
 
             message = {:threat => "sql_injection_attack", :input => input, :ip_origin => @ip_origin}
+            puts
             logger.warn(JSON.parse(message.to_json))
+            puts
             return
         end
 
@@ -116,7 +119,9 @@ module SecurityLogger
             end
 
             message = {:threat => "xss_attack", :input => input, :ip_origin => @ip_origin}
+            puts
             logger.warn(JSON.parse(message.to_json))
+            puts
         end
 
         def check_input(input)
@@ -176,7 +181,9 @@ module SecurityLogger
             end
 
             message = {:threat => "uncommon_user_agent", :input => input, :ip_origin => @ip_origin}
+            puts
             logger.warn(JSON.parse(message.to_json))
+            puts
         end
 
         def check_input(input)

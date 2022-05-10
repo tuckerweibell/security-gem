@@ -7,6 +7,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    colored (1.2)
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
@@ -32,6 +33,7 @@ PLATFORMS
   x86_64-darwin-20
 
 DEPENDENCIES
+  colored (~> 1.2)
   rake (~> 13.0)
   rubocop (~> 0.80)
   security-gem!
