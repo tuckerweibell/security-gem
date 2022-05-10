@@ -10,8 +10,8 @@ module SecurityLogger
 
     #Create logs used for SQL Injection detections
     class Sql_Injection
-        def initialize
-            
+        def initialize (ip_origin:)
+            @ip_origin = ip_origin
         end
 
         def log(input)
@@ -25,7 +25,7 @@ module SecurityLogger
                 }.to_json + $/  
             end
 
-            error = {:input => input, :ip_origin => request.ip}
+            error = {:input => input, :ip_origin => @ip_origin}
             logger.warn(JSON.parse(error.to_json))
         end
 
@@ -38,7 +38,7 @@ module SecurityLogger
                     self.log(input.strip)
                     break
                 end
-              end
+            end
 
         end
     end
